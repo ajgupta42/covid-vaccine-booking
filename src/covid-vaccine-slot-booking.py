@@ -10,7 +10,7 @@ from utils import generate_token_OTP, generate_token_OTP_manual, check_and_book,
 
 def is_token_valid(token):
     payload = jwt.decode(token, options={"verify_signature": False})
-    remaining_seconds = payload['iat'] + 600 - int(time.time())
+    remaining_seconds = payload['iat'] + 300 - int(time.time())
     if remaining_seconds <= 1*30: # 30 secs early before expiry for clock issues
         return False
     if remaining_seconds <= 60:
@@ -58,7 +58,8 @@ def main():
             otp_pref = input("\nDo you want to enter OTP manually, instead of auto-read? \nRemember selecting n would require some setup described in README (y/n Default n): ") if args.no_tty else "n"
             otp_pref = otp_pref if otp_pref else "n"
             if(otp_pref == "n"):
-                kvdb_bucket = input("Please refer KVDB setup in ReadMe to setup your own KVDB bucket. Please enter your KVDB bucket value here: ")
+                kvdb_bucket = "8keaSTAuSJeREgYYES5bjK"
+                #kvdb_bucket = input("Please refer KVDB setup in ReadMe to setup your own KVDB bucket. Please enter your KVDB bucket value here: ")
                 if not kvdb_bucket:
                     print("Sorry, having your private KVDB bucket is mandatory. Please refer ReadMe and create your own private KVBD bucket.")
                     sys.exit()
